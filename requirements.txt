@@ -1,0 +1,16 @@
+Flask==3.0.0
+flask-cors==4.0.0
+Werkzeug==3.0.1
+requests==2.31.0
+
+# LangChain local LLM
+langchain
+langchain-community
+llama-cpp-python
+pywebview
+
+# GUI backend for pywebview (Qt)
+PyQt5==5.15.10
+PyQtWebEngine==5.15.7
+qtpy==2.4.1
+

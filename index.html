@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronic Components Inventory</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📦 Electronic Components Inventory</h1>
+            <nav>
+                <button id="btnCategories" class="nav-btn">📂 Categories</button>
+                <button id="btnStocks" class="nav-btn active">📦 Stocks</button>
+                <button id="btnAI" class="nav-btn">🤖 AI Assistant</button>
+            </nav>
+        </header>
+
+        <!-- Categories View -->
+        <div id="categoriesView" class="view">
+            <div class="section-header">
+                <h2>Categories</h2>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <div class="view-toggle">
+                        <button class="view-toggle-btn active" data-view="cards" onclick="toggleViewMode('categories', 'cards')" title="Card View">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                            </svg>
+                        </button>
+                        <button class="view-toggle-btn" data-view="table" onclick="toggleViewMode('categories', 'table')" title="Table View">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="btn btn-primary" onclick="openCategoryModal()">🏷️ Add Category</button>
+                </div>
+            </div>
+            <div id="categoriesList" class="list-container"></div>
+        </div>
+
+        <!-- Stocks View -->
+        <div id="stocksView" class="view active">
+            <div class="section-header">
+                <h2>Stocks</h2>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <div class="view-toggle">
+                        <button class="view-toggle-btn active" data-view="cards" onclick="toggleViewMode('stocks', 'cards')" title="Card View">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                            </svg>
+                        </button>
+                        <button class="view-toggle-btn" data-view="table" onclick="toggleViewMode('stocks', 'table')" title="Table View">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="btn btn-primary" onclick="openStockModal(null, true)">📦 Add Component</button>
+                </div>
+            </div>
+            <div class="filter-bar" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+                <select id="categoryFilter" class="select-input">
+                    <option value="">All Categories</option>
+                </select>
+                <select id="stockStatusFilter" class="select-input">
+                    <option value="all">All Stock</option>
+                    <option value="zero">🔴 Zero Stock (0)</option>
+                    <option value="critical">⚠️ Critical (≤5)</option>
+                </select>
+            </div>
+            <div class="search-bar" style="margin-bottom: 1rem;">
+                <input type="text" id="searchInput" placeholder="🔍 Search components..." class="input-field">
+            </div>
+            <div id="stocksList" class="list-container"></div>
+        </div>
+
+        <!-- AI Assistant View with Conversation Support -->
+        <div id="aiView" class="view">
+            <div class="section-header">
+                <h2>🤖 AI Assistant</h2>
+                <button class="btn btn-primary" onclick="createConversation()">💬 New Chat</button>
+            </div>
+            <div style="display: grid; grid-template-columns: 250px 1fr; gap: 1rem; height: calc(100vh - 250px);">
+                <div class="conversations-sidebar" style="background: white; border-radius: 12px; padding: 1rem;">
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem;">💬 Conversations</h3>
+                    <div id="conversationsList" style="max-height: calc(100vh - 300px); overflow-y: auto;"></div>
+                </div>
+                <div class="chat-container" style="background: white; border-radius: 12px; padding: 1rem; display: flex; flex-direction: column;">
+                    <div id="aiChatMessages" class="chat-messages" style="flex: 1; overflow-y: auto; margin-bottom: 1rem; padding: 0.5rem; background: #f8fafc; border-radius: 8px;">
+                        <div style="text-align: center; color: #64748b; padding: 2rem;">
+                            <p>👋 Hi! I'm your AI assistant. Ask me about your inventory!</p>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem;">Select a conversation or start a new one.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="aiInput" placeholder="Ask about your inventory..." class="input-field" style="flex: 1;" onkeypress="if(event.key==='Enter') askAI()">
+                        <button class="btn btn-primary" onclick="askAI()">📤 Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals remain the same -->
+
+    <!-- Category Modal -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="categoryModalTitle">📦 Electronic Components Inventory</h3>
+                <button class="close-btn" onclick="closeCategoryModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm">
+                    <input type="hidden" id="categoryId">
+                    <label>Name *</label>
+                    <input type="text" id="categoryName" class="input-field" required>
+                    <label>Description</label>
+                    <textarea id="categoryDescription" class="input-field"></textarea>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">❌ Cancel</button>
+                        <button type="submit" class="btn btn-primary">💾 Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stock Modal -->
+    <div id="stockModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="stockModalTitle">📦 Electronic Components Inventory</h3>
+                <button class="close-btn" onclick="closeStockModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="stockForm">
+                    <input type="hidden" id="stockId">
+                    <label>Name *</label>
+                    <input type="text" id="stockName" class="input-field" required autocomplete="off">
+ <label>Category *</label>
+                    <select id="stockCategory" class="input-field" required></select>
+                    <div class="row">
+                        <div class="col">
+                            <label>Quantity *</label>
+                            <input type="number" id="stockQuantity" class="input-field" required min="0" pattern="[0-9]*" inputmode="numeric">
+                        </div>
+                        <div class="col">
+                            <label>Unit</label>
+                            <input type="text" id="stockUnit" class="input-field" value="pcs" list="unitSuggestions">
+                            <datalist id="unitSuggestions">
+                                <option value="pcs">
+                                <option value="ea">
+                                <option value="pkg">
+                                <option value="m">
+                                <option value="g">
+                            </datalist>
+                        </div>
+                    </div>
+                    <label>Location</label>
+                    <input type="text" id="stockLocation" class="input-field" autocomplete="off">
+                    <label>Description</label>
+                    <textarea id="stockDescription" class="input-field"></textarea>
+                    <label>Image</label>
+                    <input type="file" id="stockImage" accept="image/*" style="display: none;">
+                    <input type="file" id="stockImageCamera" accept="image/*" capture="environment" style="display: none;">
+                    <div class="image-buttons" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <button type="button" class="btn btn-secondary"onclick="document.getElementById('stockImage').click()" style="flex: 1;">
+                            📁 Browse Files
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('stockImageCamera').click()" style="flex: 1;">
+                            📷 Take Photo
+                        </button>
+                    </div>
+                    <div id="stockImagePreview"></div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeStockModal()">❌ Cancel</button>
+                        <button type="submit" class="btn btn-primary">💾 Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="confirmModalTitle">📦 Electronic Components Inventory</h3>
+                <button class="close-btn" onclick="closeConfirmModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmModalText" style="margin: 1rem 0; text-align: center; font-size: 1.1rem;"></p>
+                <div class="modal-actions" style="margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeConfirmModal()" id="confirmCancelBtn">❌ Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmOkBtn">✅ Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Modal -->
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📦 Electronic Components Inventory</h3>
+                <button class="close-btn" onclick="closeAlertModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="alertModalText" style="margin: 1rem 0; text-align: center;"></p>
+                <div class="modal-actions" style="margin-top: 1.5rem; justify-content: center;">
+                    <button type="button" class="btn btn-primary" onclick="closeAlertModal()" id="alertOkBtn">✅ OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Modal -->
+    <div id="renameModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="renameModalTitle">📦 Electronic Components Inventory</h3>
+                <button class="close-btn" onclick="closeRenameModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="renameForm">
+                    <label>Conversation Title *</label>
+                    <input type="text" id="renameInput" class="input-field" required autofocus>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeRenameModal()">❌ Cancel</button>
+                        <button type="submit" class="btn btn-primary">✅ Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Usage Modal -->
+    <div id="usageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📦 Electronic Components Inventory</h3>
+                <button class="close-btn" onclick="closeUsageModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 1rem;" id="usageModalText"></p>
+                <form id="usageForm">
+                    <label>How many did you use? *</label>
+                    <input type="number" id="usageQuantity" class="input-field" required min="1" max="0" pattern="[0-9]*" inputmode="numeric" autofocus>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeUsageModal()">❌ Cancel</button>
+                        <button type="submit" class="btn btn-primary">✅ Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

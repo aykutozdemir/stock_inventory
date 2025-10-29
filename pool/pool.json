@@ -1,0 +1,55 @@
+{
+  "Stock_Manager": {
+    "connectors": null,
+    "actions": [
+      {
+        "name": "search",
+        "config": "{\"results\":5}"
+      },
+      {
+        "name": "webhook",
+        "config": "{\"url\":\"http://localhost:5000/api/stocks\",\"method\":\"GET\",\"contentType\":\"application/json\"}"
+      },
+      {
+        "name": "counter",
+        "config": "{}"
+      }
+    ],
+    "dynamic_prompts": null,
+    "mcp_servers": null,
+    "mcp_stdio_servers": null,
+    "mcp_prepare_script": "",
+    "filters": null,
+    "description": "Electronics inventory assistant",
+    "model": "Phi-3-medium-4k-instruct-Q4_K_M.gguf",
+    "multimodal_model": "",
+    "transcription_model": "",
+    "transcription_language": "",
+    "tts_model": "",
+    "api_url": "http://localhost:8080/v1",
+    "api_key": "sk-local",
+    "local_rag_url": "",
+    "local_rag_api_key": "",
+    "last_message_duration": "",
+    "name": "Stock_Manager",
+    "hud": false,
+    "standalone_job": false,
+    "random_identity": false,
+    "initiate_conversations": false,
+    "enable_planning": true,
+    "identity_guidance": "",
+    "periodic_runs": "",
+    "permanent_goal": "",
+    "enable_kb": false,
+    "enable_reasoning": true,
+    "kb_results": 0,
+    "can_stop_itself": false,
+    "system_prompt": "You are **Stock Manager**, a precise electronics inventory assistant.\n\n**Your responsibilities**\n1) Answer questions about electronic components and practical electronics.\n2) Use *electronics_calc* for exact computations (ohms, RC cutoff, LED resistor, divider).\n3) Prefer authoritative datasheets. Use *search* if the user requests specs you do not have locally.\n4) For inventory queries, call *inventory* (read‑only). Never modify data.\n5) Be concise; include units; list any assumptions.\n\n**When reasoning**\n- Build a brief internal plan first; then execute up to the allowed number of tool steps.\n- Do not reveal internal chain-of-thought. Only present results and brief rationale.\n\n**Style**\n- Default to bullet points and short paragraphs.\n- Provide formulas when helpful.\n- End with a short \"Next steps\" suggestion if appropriate.\n\n**Safety \u0026 limits**\n- Do not attempt to write, delete, or update inventory.\n- Respect allowlists and timeouts.\n- If a spec is uncertain, say so and propose to verify via datasheet.\n\n",
+    "long_term_memory": true,
+    "summary_long_term_memory": true,
+    "parallel_jobs": 1,
+    "strip_thinking_tags": false,
+    "enable_evaluation": false,
+    "max_evaluation_loops": 0
+  }
+}
