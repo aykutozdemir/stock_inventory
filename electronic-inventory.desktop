@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Electronic Component Inventory
+Comment=AI-powered electronic component inventory management with local LLM
+Exec=/home/aykut/electronic-component-inventory/run.sh
+Icon=/home/aykut/electronic-component-inventory/electronic-inventory-icon-64.png
+Terminal=false
+Categories=Office;Database;Utility;
+Keywords=inventory;electronics;components;AI;LLM;
+StartupNotify=true

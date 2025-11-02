@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+ENV/
+.venv
+
+# Virtual environment (explicit)
+venv/
+
+# Models directory (explicit - excludes all model files)
+models/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+inventory.db
+
+# Models (large files)
+models/*.gguf
+models/*.mmproj
+*.gguf
+*.mmproj
+
+# Logs
+*.log
+app.log
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads
+uploads/*
+!uploads/.gitkeep
+
+# Memory files
+memory/*.json
+!memory/.gitkeep
+
+# Hardware config (may contain system-specific settings)
+hardware_config.json
+
+# Build and distribution
+dist/
+build/
+*.egg-info/
+*.tar
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
+

@@ -1,0 +1,28 @@
+Flask==3.0.0
+flask-cors==4.0.0
+Werkzeug==3.0.1
+requests==2.31.0
+
+# LangChain local LLM
+langchain
+langchain-community
+# llama-cpp-python - installed separately with CUDA support via setup.sh
+# Use: pip install llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu123
+
+# System tray support
+pystray==0.19.5
+Pillow==10.0.0
+
+# Model downloading
+requests==2.31.0
+
+# Hardware detection
+psutil==5.9.0
+
+# PDF processing for datasheet parsing
+PyPDF2==3.0.1
+
+# Web scraping for datasheet search
+beautifulsoup4==4.12.2
+lxml==4.9.3
+
